@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redes Sociales en la Educación</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00C897;
+    --green-light: #E6FFF9;
+    --green-mid: #009E77;
+    --red: #FF4757;
+    --red-light: #FFF0F2;
+    --red-mid: #CC2233;
+    --dark: #0D1117;
+    --mid: #1C2333;
+    --surface: #232B3E;
+    --text: #E8ECF4;
+    --muted: #8892A4;
+    --gold: #FFD166;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+    overflow-x: hidden;
+  }
+
+  /* Background subtle grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .header .label {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 5px 18px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 7vw, 76px);
+    line-height: 1;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+
+  .header h1 span.green { color: var(--green); }
+  .header h1 span.red { color: var(--red); }
+
+  .header p {
+    margin-top: 14px;
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  /* DIVIDER LINE */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+
+  /* MAIN GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* COLUMNS */
+  .col {
+    border-radius: 20px;
+    padding: 28px 24px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .col.green-col {
+    background: linear-gradient(160deg, #0a2e24 0%, #0D1117 100%);
+    border: 1px solid rgba(0,200,151,0.25);
+    box-shadow: 0 0 60px rgba(0,200,151,0.06);
+    animation-delay: 0.15s;
+  }
+
+  .col.red-col {
+    background: linear-gradient(160deg, #2e0a0f 0%, #0D1117 100%);
+    border: 1px solid rgba(255,71,87,0.25);
+    box-shadow: 0 0 60px rgba(255,71,87,0.06);
+    animation-delay: 0.25s;
+  }
+
+  .col-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .col-badge {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .green-col .col-badge { background: rgba(0,200,151,0.15); }
+  .red-col .col-badge { background: rgba(255,71,87,0.15); }
+
+  .col-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1.5px;
+  }
+  .green-col .col-title { color: var(--green); }
+  .red-col .col-title { color: var(--red); }
+
+  .col-subtitle {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ITEMS */
+  .item {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .item:last-child { margin-bottom: 0; }
+
+  .item:hover {
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+  }
+
+  .green-col .item:hover { border-color: rgba(0,200,151,0.2); }
+  .red-col .item:hover { border-color: rgba(255,71,87,0.2); }
+
+  .item-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .item-icon {
+    font-size: 18px;
+    width: 28px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .item-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .item ul {
+    list-style: none;
+    padding-left: 38px;
+  }
+
+  .item ul li {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    padding: 2px 0;
+    position: relative;
+  }
+
+  .item ul li::before {
+    content: '›';
+    position: absolute;
+    left: -14px;
+    font-size: 15px;
+  }
+
+  .green-col .item ul li::before { color: var(--green); }
+  .red-col .item ul li::before { color: var(--red); }
+
+  /* CENTER MESSAGE */
+  .center-block {
+    background: linear-gradient(135deg, var(--surface) 0%, #1a2035 100%);
+    border: 1px solid rgba(255,209,102,0.3);
+    border-radius: 20px;
+    padding: 32px 36px;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.7s ease 0.35s both;
+  }
+
+  .center-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(255,209,102,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .balance-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .center-block blockquote {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .center-block blockquote strong {
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  /* RECOMMENDATIONS */
+  .recs {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 28px 24px;
+    animation: fadeUp 0.7s ease 0.45s both;
+  }
+
+  .recs-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .recs-header h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    color: #fff;
+  }
+
+  .recs-header .icon { font-size: 22px; }
+
+  .recs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .rec-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: background 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .rec-item:hover {
+    background: rgba(255,255,255,0.07);
+    transform: translateY(-2px);
+  }
+
+  .rec-icon { font-size: 22px; }
+
+  .rec-text {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: fadeUp 0.7s ease 0.55s both;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="label">Infografía · Educación Digital</div>
+    <h1>Redes Sociales<br>en la <span class="green">Educación</span></h1>
+    <p>¿Aliadas o enemigas del aprendizaje?</p>
+  </div>
+
+  <!-- TWO-COLUMN GRID -->
+  <div class="grid">
+
+    <!-- LEFT: OPPORTUNITIES -->
+    <div class="col green-col">
+      <div class="col-header">
+        <div class="col-badge">🟢</div>
+        <div>
+          <div class="col-title">Oportunidades</div>
+          <div class="col-subtitle">Impacto positivo</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">📚</span>
+          <span class="item-title">Acceso al conocimiento</span>
+        </div>
+        <ul>
+          <li>Educación gratuita y global para todos</li>
+          <li>Cursos, tutoriales y contenido en cualquier momento</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">🌍</span>
+          <span class="item-title">Democratización del aprendizaje</span>
+        </div>
+        <ul>
+          <li>Personas de cualquier contexto pueden aprender</li>
+          <li>Reduce barreras geográficas y económicas</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">🎥</span>
+          <span class="item-title">Aprendizaje dinámico</span>
+        </div>
+        <ul>
+          <li>Videos cortos, infografías, explicaciones visuales</li>
+          <li>Facilita entender temas complejos</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">🤝</span>
+          <span class="item-title">Comunidades educativas</span>
+        </div>
+        <ul>
+          <li>Grupos de estudio, foros y colaboración</li>
+          <li>Interacción con expertos y docentes</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">🚀</span>
+          <span class="item-title">Desarrollo de habilidades</span>
+        </div>
+        <ul>
+          <li>Autoaprendizaje continuo</li>
+          <li>Pensamiento crítico (cuando se usa bien)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT: RISKS -->
+    <div class="col red-col">
+      <div class="col-header">
+        <div class="col-badge">🔴</div>
+        <div>
+          <div class="col-title">Riesgos</div>
+          <div class="col-subtitle">Impacto negativo</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">📱</span>
+          <span class="item-title">Distracción constante</span>
+        </div>
+        <ul>
+          <li>Notificaciones y entretenimiento excesivo</li>
+          <li>Pérdida de concentración en el estudio</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">🎭</span>
+          <span class="item-title">Mundos irreales</span>
+        </div>
+        <ul>
+          <li>Comparación social con vidas "perfectas"</li>
+          <li>Distorsión de la realidad y autoestima</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">🧠</span>
+          <span class="item-title">Sobrecarga de información</span>
+        </div>
+        <ul>
+          <li>Demasiado contenido, difícil filtrar lo útil</li>
+          <li>Información falsa o poco confiable</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">⏳</span>
+          <span class="item-title">Pérdida de tiempo</span>
+        </div>
+        <ul>
+          <li>Consumo pasivo en lugar de aprendizaje activo</li>
+          <li>Horas invertidas sin objetivo claro</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-head">
+          <span class="item-icon">⚠️</span>
+          <span class="item-title">Dependencia digital</span>
+        </div>
+        <ul>
+          <li>Uso excesivo que afecta hábitos de estudio</li>
+          <li>Dificultad para desconectarse</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER MESSAGE -->
+  <div class="center-block">
+    <span class="balance-icon">⚖️</span>
+    <blockquote>
+      "Las redes sociales no son <strong>buenas ni malas</strong>:<br>
+      depende de <strong>cómo las uses</strong>."
+    </blockquote>
+  </div>
+
+  <!-- RECOMMENDATIONS -->
+  <div class="recs">
+    <div class="recs-header">
+      <span class="icon">💡</span>
+      <h3>Recomendaciones para un uso inteligente</h3>
+    </div>
+    <div class="recs-grid">
+      <div class="rec-item">
+        <span class="rec-icon">🎯</span>
+        <span class="rec-text">Usar redes con propósito educativo claro</span>
+      </div>
+      <div class="rec-item">
+        <span class="rec-icon">✅</span>
+        <span class="rec-text">Seguir cuentas confiables y verificadas</span>
+      </div>
+      <div class="rec-item">
+        <span class="rec-icon">⏱️</span>
+        <span class="rec-text">Limitar el tiempo de uso diario</span>
+      </div>
+      <div class="rec-item">
+        <span class="rec-icon">🔍</span>
+        <span class="rec-text">Verificar la información antes de compartir</span>
+      </div>
+      <div class="rec-item">
+        <span class="rec-icon">🌿</span>
+        <span class="rec-text">Equilibrar estudio y entretenimiento</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Infografía educativa · Diseño para presentación</div>
+
+</div>
+</body>
+</html>
